@@ -1,0 +1,13 @@
+coverage/
+node_modules/
+npm-debug.log
+lib/
+.nyc_output/
+generator/*.json
+.vscode/symbols.json
+default/
+_replicator/
+_users/
+log.txt
+pouch__all_dbs__/
+.DS_Store
