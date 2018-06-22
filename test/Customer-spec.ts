@@ -43,16 +43,12 @@ class CustomerTest {
       formatted_mobile: '+1(929)277-8399',
       name: "Joseph Shmoo",
       email: "joesh@gmail.com",
-      autocomplete: "199 Orchard St, New York, NY 10002, USA",
       street_num: "199",
       street_route: "Orchard Street",
       apartment: "2D",
       city: "New York",
       state: "NY",
       zip: "10002",
-      lat: "40.72224",
-      lng: "-73.988152",
-      is_doorman: true,
       delivery_notes: "Ring bell twice",
       cleaning_notes: "Clean slowly",
       payment_customer_id: "cus_9xJOnv9Enc98S",
@@ -205,25 +201,7 @@ class CustomerTest {
     }).catch(m=>console.log(m));
   }
 
-  @test("should insert customer with extra mobile")
-  public testInsertExtraMobile(done) {
-    const customers = new Customers(CustomerTest.db, Customer);
-    customers.insert({ mobile: "6465490561", extra_mobile: "6465490562", is_extra_default: true }).then((c) => {
-      expect(c.mobile).to.equal("6465490561");
-      expect(c.extra_mobile).to.equal("6465490562");
-      expect(c.is_extra_default).to.equal(true);
-      return customers.update(c, { formatted_mobile : "6465490562" });
-    }).then((cs) => {
-      return customers.find("extra_mobile", "0562");
-    }).then((cs) => {
-      if (cs.length > 0) {
-        expect(cs[0].mobile).to.equal("6465490561");
-        expect(cs[0].is_extra_default).to.equal(true);
-        expect(cs[0].formatted_mobile).to.equal("6465490562");
-        done();
-      }
-    }).catch(m=>console.log(m));
-  }  
+ 
 
   //Update
   @test("should update parameters")
@@ -232,16 +210,12 @@ class CustomerTest {
       mobile: "19292778391",
       name: "Mud Park",
       email: "mpark@gmail.com",
-      autocomplete: "199 Orchard St, New York, NY 10002, USA",
       street_num: "199",
       street_route: "Orchard Street",
       apartment: "2D",
       city: "New York",
       state: "NY",
       zip: "10002",
-      lat: "40.72224",
-      lng: "-73.988152",
-      is_doorman: true,
       delivery_notes: "Ring bell twice",
       cleaning_notes: "Clean slowly",
       payment_customer_id: "cus_9xJOnv9Enc98S"
@@ -254,15 +228,12 @@ class CustomerTest {
       let updatedCustomerObj = {
         name: "Muddy Parks",
         email: "muddyparks@gmail.com",
-        is_doorman: false,
         delivery_notes: "Turn around"
       }
       return customers.update(c, updatedCustomerObj);
     }).then((cus) => {
       expect(cus.mobile).to.equal("19292778391");
       expect(cus.name).to.equal("Muddy Parks");
-      expect(cus.is_doorman).to.equal(false);
-      expect(cus.autocomplete).to.equal("199 Orchard St, New York, NY 10002, USA");
       done();
     }).catch(m=>console.log(m));
   }
@@ -343,16 +314,12 @@ class CustomerTest {
       mobile: "19292778388",
       name: "Joseph Shmoo",
       email: "joesh@gmail.com",
-      autocomplete: "199 Orchard St, New York, NY 10002, USA",
       street_num: "199",
       street_route: "Orchard Street",
       apartment: "2D",
       city: "New York",
       state: "NY",
       zip: "10002",
-      lat: "40.72224",
-      lng: "-73.988152",
-      is_doorman: true,
       delivery_notes: "Ring bell twice",
       cleaning_notes: "Clean slowly",
       payment_customer_id: "cus_9xJOnv9Enc98S"
@@ -403,41 +370,6 @@ class CustomerTest {
       });
   }
 
-  @test("should allow valid longitude")
-  public testValidLng(done) {
-    const customers = new Customers(CustomerTest.db, Customer);
-    customers.insert({ mobile: "6165490561", lng: "-73.988152" }).then((c) => {
-      expect(c.lng).to.equal("-73.988152");
-      done();
-    }).catch(m=>console.log(m));
-  }
-
-  @test("shouldn't allow invalid longitude")
-  public testInvalidLng(done) {
-    const customers = new Customers(CustomerTest.db, Customer);
-    customers.insert({ mobile: "6165490561", lng: "-181" }).then(_.noop)
-      .catch((c) => {
-        done();
-      });
-  }
-
-  @test("should allow valid latitude")
-  public testValidLat(done) {
-    const customers = new Customers(CustomerTest.db, Customer);
-    customers.insert({ mobile: "6165490561", lat: "41.25" }).then((c) => {
-      expect(c.lat).to.equal("41.25");
-      done();
-    }).catch(m=>console.log(m));
-  }
-
-  @test("shouldn't allow invalid latitude")
-  public testInvalidLat(done) {
-    const customers = new Customers(CustomerTest.db, Customer);
-    customers.insert({ mobile: "6165490561", lat: "-91" }).then(_.noop)
-      .catch((c) => {
-        done();
-      });
-  }
 
   @test("should allow valid email")
   public testValidEmail(done) {
@@ -466,17 +398,6 @@ class CustomerTest {
       });
   }
 
-  @test("should set pricing group")
-  public testPricingGroup(done) {
-    const customers = new Customers(CustomerTest.db, Customer);
-    customers.insert({ mobile: "6125490405", pricing_group: "abc" }).then((c) => {
-      return customers.find("mobile", "6125490405")
-    }).then((cs) => {
-      expect(cs.length).to.equal(1);
-      expect(cs[0].pricing_group).to.equal("abc");
-      done();
-    }).catch(m=>console.log(m));
-  }
 
   // last name
   @test("should insert all parameters")
