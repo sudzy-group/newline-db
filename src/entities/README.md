@@ -78,6 +78,16 @@
 | discount_fixed | `number`   | discount | Discount in dollar amount      |                |
 | discount_id    | `number`   | discount | Discount id applied            |                |
 | is_upcharge    | `boolean`  | upcharge | Is upcharge                    |                |
+# OrderItemChoice
+| Field Name    | Field Type | Group   | Description              | Comments       |
+| ------------- | ---------- | ------- | ------------------------ | -------------- |
+| id            | `string`   | default | Entity id                | Auto-generated |
+| created_at    | `number`   | default | Creation datetime (unix) | Auto-generated |
+| order_item_id | `string`   | default | Order item id            | Searchable     |
+| choice_id     | `string`   | default | choice_id                | Validated      |
+| name          | `string`   | default | choice name              |                |
+| quantity      | `number`   | default | Quantity of choice       | Validated      |
+| price         | `number`   | price   | extra price              |                |
 # OrderCharge
 | Field Name      | Field Type | Group   | Description                        | Comments       |
 | --------------- | ---------- | ------- | ---------------------------------- | -------------- |
