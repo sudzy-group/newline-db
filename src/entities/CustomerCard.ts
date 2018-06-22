@@ -74,20 +74,13 @@ export class CustomerCard extends Entity {
         name: "is_forgotten",
         description: "Whether card is hidden"
     })
-    public is_forgotten: boolean;    
+    public is_forgotten: boolean;      
 
     @EntityField({
         group: "settings",
-        name: "in_stripe",
-        description: "Whether card is stored in stripe"
+        name: "card_token",
+        description: "token of the card in the system"
     })
-    public in_stripe: boolean;    
-
-    @EntityField({
-        group: "settings",
-        name: "stripe_token",
-        description: "Stripe token before it is turned into a card"
-    })
-    public stripe_token: string;    
+    public card_token: string;    
 
 }

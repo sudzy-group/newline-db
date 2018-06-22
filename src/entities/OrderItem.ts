@@ -19,20 +19,12 @@ export class OrderItem extends Entity {
 
     @EntityField({
         group: "default",
-        name: "isbn",
+        name: "dish_id",
         mandatory: true,
         validate: noWhitespace,
-        description: "isbn" 
+        description: "dish_id" 
     })
-    public isbn: string;
-
-    @EntityField({
-        group: "default",
-        name: "type",
-        mandatory: true,
-        description: "type" 
-    })
-    public type: string;    
+    public dish_id: string;
 
     @EntityField({
         group: "default",
@@ -43,26 +35,29 @@ export class OrderItem extends Entity {
     public name: string;
 
     @EntityField({
-        group: "pricing",
+        group: "default",
         name: "quantity",
+        mandatory: true,
         validate: amount0OrGreater,
         description: "Quantity of item" 
     })
     public quantity: number;
 
     @EntityField({
-        group: "pricing",
+        group: "default",
         name: "price",
+        mandatory: true,
         description: "Total price" 
     })
     public price: number;
 
     @EntityField({
-        group: "pricing",
-        name: "is_manual_pricing",
-        description: "User selected manual pricing" 
+        group: "default",
+        name: "tax",
+        mandatory: true,
+        description: "Total price" 
     })
-    public is_manual_pricing: boolean;
+    public tax: number;    
 
     @EntityField({
         group: "notes",
@@ -72,31 +67,23 @@ export class OrderItem extends Entity {
     public notes: string[];
 
     @EntityField({
-        group: "status",
-        name: "ready",
-        description: "Specific ready status about this item" 
+        group: "discount",
+        name: "discount_fixed",
+        description: "Discount in dollar amount"
     })
-    public ready: boolean;
+    public discount_fixed: number;
 
     @EntityField({
-        group: "status",
-        name: "pickedup",
-        description: "Specific pickedup status about this item" 
+        group: "discount",
+        name: "discount_id",
+        description: "Discount id applied"
     })
-    public pickedup: boolean;
+    public discount_id: number;    
 
     @EntityField({
-        group: "extra",
-        name: "extra",
-        description: "extra description and upcharges for item" 
+        group: "upcharge",
+        name: "is_upcharge",
+        description: "Is upcharge"
     })
-    public extra: any[];
-
-    @EntityField({
-        group: "manual_name",
-        name: "manual_name",
-        description: "Item manual name" 
-    })
-    public manual_name: string;
-    
+    public is_upcharge: boolean;
 }

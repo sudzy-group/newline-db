@@ -7,15 +7,22 @@ import { lengthGreater1 } from "../validators/lengthGreater1";
  * Represent a Order entity
  */
 export class Order extends Entity {
-	
-	@EntityField({
+
+    @EntityField({
         group: "default",
-        name: "customer_id",
+        name: "started_at",
         mandatory: true,
-        description: "Customer id",
-        search_by: [ identity ] 
+        description: "Started at time",
     })
-    public customer_id: string;
+    public started_at: number;
+
+    @EntityField({
+        group: "default",
+        name: "ended_at",
+        mandatory: true,
+        description: "Ended at time",
+    })
+    public ended_at: number;
 
     @EntityField({
         group: "default",
@@ -28,19 +35,36 @@ export class Order extends Entity {
     public readable_id: string;
 
     @EntityField({
-        group: "due",
-        name: "due_datetime",
-        description: "Date order due",
-        search_by: [ identity ] 
+        group: "default",
+        mandatory: true,
+        name: "is_takeout",
+        description: "Is takeout"
     })
-    public due_datetime: string;
+    public is_takeout: boolean;    
 
     @EntityField({
-        group: "rack",
-        name: "rack",
-        description: "Rack number"
+        group: "default",
+        name: "kiosk_id",
+        mandatory: true,
+        validate: noWhitespace,
+        description: "Kiosk id"
     })
-    public rack: string;
+    public kiosk_id: string;
+
+	@EntityField({
+        group: "customer",
+        name: "customer_id",
+        description: "Customer id",
+        search_by: [ identity ] 
+    })
+    public customer_id: string;
+    
+	@EntityField({
+        group: "table",
+        name: "table_id",
+        description: "Table id",
+    })
+    public table_id: string;
 
     @EntityField({
         group: "notes",
@@ -78,73 +102,9 @@ export class Order extends Entity {
     public discount_id: number;
 
     @EntityField({
-        group: "paid_in",
-        name: "paid_in",
-        description: "Indicates the order id of the paid order"
-    })
-    public paid_in: string;    
-
-    @EntityField({
-        group: "balance",
-        name: "balance",
-        description: "Balance remaining",
-        validate: amount0OrGreater,
-        search_by: [ "existingBalance" ]
-    })
-    public balance: number;
-
-    @EntityField({
         group: "status",
-        name: "all_ready",
-        description: "Whether order is ready"
+        name: "ready_at",
+        description: "Ready at"
     })
-    public all_ready: boolean;
-
-    @EntityField({
-        group: "status",
-        name: "all_pickedup",
-        description: "Whether order is back with customer"
-    })
-    public all_pickedup: boolean;
-
-    @EntityField({
-        group: "cp",
-        name: "checkpoint",
-        description: "Free text checkpoint",
-        search_by: [ identity ] 
-    })
-    public checkpoint: string;
-
-    @EntityField({
-        group: "delivery",
-        name: "delivery_pickup_id",
-        validate: noWhitespace,
-        description: "Delivery pickup id"
-    })
-    public delivery_pickup_id: string;
-
-    @EntityField({
-        group: "delivery",
-        name: "delivery_dropoff_id",
-        validate: noWhitespace,
-        description: "Delivery dropoff id"
-    })
-    public delivery_dropoff_id: string;
-
-    @EntityField({
-        group: "wholesale",
-        name: "original_id",
-        description: "Original ticket id for wholesale order",
-        search_by: [ identity ] 
-    })
-    public original_id: string;
-
-    protected existingBalance(balance) {
-        if (balance > 0) {
-            return balance;
-        } else {
-            return undefined;
-        }
-    }
-	
+    public ready_at: number;
 }

@@ -15,7 +15,6 @@ export class OrderCharge extends Entity {
     })
     public order_id: string;
 
-
     @EntityField({
         group: "default",
         name: "amount",
@@ -48,7 +47,6 @@ export class OrderCharge extends Entity {
     })
     public card_id: string;
 
-
     @EntityField({
         group: "cash",
         name: "date_cash",
@@ -70,12 +68,4 @@ export class OrderCharge extends Entity {
         description: "Amount refunded"
     })
     public amount_refunded: number;
-
-    @EntityField({
-        group: "parent",
-        name: "parent_id",
-        description: "The parent payment of this payment",
-        search_by: [identity]       
-    })
-    public parent_id: string;   
 }
