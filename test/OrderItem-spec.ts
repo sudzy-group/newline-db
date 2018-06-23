@@ -35,60 +35,80 @@ class OrderItemTest {
     let order_items = OrderItemTest.order_items;
     let orderItemObj = {
      order_id: "111",
-     isbn: "1234",
-     type: 'wf',
-     name: "Washfold",     
+     dish_id: "1234",
+     name: "Chicken",     
      price: 10.00,
      quantity: 1,
-     manual_name: "ouch",
      notes: ['separate'],
+     tax: 0.00
    };
    order_items.insert(orderItemObj).then((item) => {
       expect(item.order_id).to.equal("111");
-      expect(item.isbn).to.equal("1234");
+      expect(item.dish_id).to.equal("1234");
       expect(item.price).to.equal(10.00);
       expect(item.quantity).to.equal(1);
-      expect(item.manual_name).to.equal("ouch");
       expect(item.notes.length).to.equal(1);
       done();
     }).catch(m=>console.log(m));
   }
+
+
+ @test("should insert order item with discount")
+  public testInsertOrderItemWithDiscount(done) {
+    let order_items = OrderItemTest.order_items;
+    let orderItemObj = {
+     order_id: "111",
+     dish_id: "1234",
+     name: "Chicken",     
+     price: 10.00,
+     quantity: 1,
+     notes: ['separate'],
+     tax: 0.00,
+     discount_id: "4",
+     discount_fixed: 2.00,
+     is_upcharge: false
+   };
+   order_items.insert(orderItemObj).then((item) => {
+      expect(item.discount_id).to.equal("4");
+      expect(item.discount_fixed).to.equal(2.00);
+      expect(item.is_upcharge).to.equal(false);
+      done();
+    }).catch(m=>console.log(m));
+  }
+
 
   @test("should insert 3 order items")
   public testInsert3OrderItem(done) {
     let order_items = OrderItemTest.order_items;
     let orderItem1Obj = {
      order_id: "222",
-     isbn: "1234",
-     type: 'wf',
-     name: "Washfold",
-     ready: true,
+     dish_id: "1234",
+     name: "Chicken",
      price: 10.00,
-     is_manual_pricing: true,
-     quantity: 1
+     quantity: 1,
+     tax: 0.00
    };
 
    order_items.insert(orderItem1Obj).then((item1) => {
       expect(item1.order_id).to.equal("222");
      let orderItem2Obj = {
      order_id: "222" ,
-     type: 'wf',
-     isbn: "2a2a",
+     dish_id: "2a2a",
      price: 15.40,
-     pickedup: true,
-     name: "Pants",
-     quantity: 3
+     name: "Coke",
+     quantity: 3,
+     tax: 0.00
    };
    return order_items.insert(orderItem2Obj);
    }).then((item2) => {
       expect(item2.order_id).to.equal("222");
      let orderItem3Obj = {
      order_id: "222" ,
-     type: 'wf',
-     isbn: "2a2a",
+     dish_id: "2a2a",
      price: 4.20,
      name: "Skirts",
-     quantity: 1
+     quantity: 1,
+     tax: 0.00
    };
    return order_items.insert(orderItem3Obj);
   }).then((item3) => {
@@ -96,8 +116,6 @@ class OrderItemTest {
      return order_items.find("order_id", "222");
   }).then((items) => {
       expect(items.length).to.equal(3);
-      expect(items[0].type).to.equal('wf');
-      expect(items[0].manual_name).is.null;
       done();
     }).catch(m=>console.log(m));
   }
@@ -108,11 +126,11 @@ class OrderItemTest {
     let order_items = OrderItemTest.order_items;
     let orderItem = {
      order_id: "333" ,
-     isbn: "324",
-     type: "wf",
+     dish_id: "324",
      price: 10.00,
-     name: "Washfold",
-     quantity: 1
+     name: "Chicken",
+     quantity: 1,
+     tax: 0.00
    };
 
    order_items.insert(orderItem).then((item) => {
@@ -125,16 +143,44 @@ class OrderItemTest {
   }
 
 //Update
+
+ @test("should be able to update with discount")
+  public testUpdateDiscount(done) {
+    let order_items = OrderItemTest.order_items;
+    let orderItem = {
+     order_id: "333" ,
+     dish_id: "324",
+     price: 10.00,
+     name: "Chicken",
+     quantity: 1,
+     tax: 0.00
+   };
+
+   order_items.insert(orderItem).then((item) => {
+       let updatedItem = {
+      	discount_id: "5",
+     	discount_fixed: 2.00,
+        is_upcharge: false
+       
+      }
+      return order_items.update(item, updatedItem);
+    }).then((updated_item) => {
+      expect(updated_item.discount_id).to.equal("5");
+      done();
+    }).catch(m=>console.log(m));
+  }
+
+
 @test("should not update order_id")
   public testUpdateOrderId(done) {
     let order_items = OrderItemTest.order_items;
     let orderItemObj = {
      order_id: "3a3",
-     type: "wf",
-     isbn: "1234",
+     dish_id: "1234",
      price: 10.00,
-     name: "Washfold",
-     quantity: 1
+     name: "Chicken",
+     quantity: 1,
+     tax: 0.00
    };
    order_items.insert(orderItemObj).then((item) => {
       expect(item.order_id).to.equal("3a3");
@@ -148,20 +194,21 @@ class OrderItemTest {
     });
   }
 
-  @test("should not update isbn")
+  @test("should not update dish_id")
   public testUpdateItemId(done) {
     let order_items = OrderItemTest.order_items;
     let orderItemObj = {
      order_id: "55a",
-     isbn: "1234",
+     dish_id: "1234",
      price: 10.00,
-     name: "Washfold",
-     quantity: 1
+     name: "Chicken",
+     quantity: 1,
+     tax: 0.00
    };
    order_items.insert(orderItemObj).then((item) => {
-      expect(item.isbn).to.equal("1234");
+      expect(item.dish_id).to.equal("1234");
       let orderItemUpdated = {
-         isbn: "2234",
+         dish_id: "2234",
       }
       return order_items.update(item, orderItemUpdated);
       }).then(_.noop)
@@ -175,13 +222,14 @@ class OrderItemTest {
     let order_items = OrderItemTest.order_items;
     let orderItemObj = {
      order_id: "675",
-     isbn: "343",
+     dish_id: "343",
      price: 10.00,
-     name: "Washfold",
-     quantity: 1
+     name: "Chicken",
+     quantity: 1,
+     tax: 0.00
    };
    order_items.insert(orderItemObj).then((item) => {
-      expect(item.isbn).to.equal("343");
+      expect(item.dish_id).to.equal("343");
       let orderItemUpdated = {
          name: "Shirt"
       }
@@ -192,16 +240,16 @@ class OrderItemTest {
     });
   }
 
-  @test("should update quantity and price")
+  @test("should not update quantity and price")
   public testUpdateQuantityPrice(done) {
     let order_items = OrderItemTest.order_items;
     let orderItemObj = {
      order_id: "897",
-     isbn: "343",
-     type: 'wf',
+     dish_id: "343",
      price: 10.00,
-     name: "Washfold",
-     quantity: 5
+     name: "Chicken",
+     quantity: 5,
+     tax: 0.00
    };
    order_items.insert(orderItemObj).then((item) => {
       expect(item.quantity).to.equal(5);
@@ -211,11 +259,10 @@ class OrderItemTest {
          quantity: 10
       }
       return order_items.update(item, orderItemUpdated);
-       }).then((updatedItem) => {
-        expect(updatedItem.price).to.equal(20.00);
-        expect(updatedItem.quantity).to.equal(10);
-      done();
-    }).catch(m=>console.log(m));
+  }).then(_.noop)
+      .catch((c) => {
+        done();
+       })
   }
 
 //Delete
@@ -224,11 +271,11 @@ class OrderItemTest {
     let order_items = OrderItemTest.order_items;
     let orderItem = {
      order_id: "444" ,
-     isbn: "324",
-     type: 'wf',
+     dish_id: "324",
      price: 10.00,
-     name: "Washfold",
-     quantity: 1
+     name: "Chicken",
+     quantity: 1,
+     tax: 0.00
    };
    let id = "";
 
@@ -250,11 +297,11 @@ class OrderItemTest {
     let order_items = OrderItemTest.order_items;
     let orderItem = {
      order_id: "555" ,
-     isbn: "324",
-     type: 'wf',
+     dish_id: "324",
      price: 10.00,
-     name: "Washfold",
-     quantity: -1
+     name: "Chicken",
+     quantity: -1,
+     tax: 0.00
    };
    order_items.insert(orderItem).then(_.noop)
    .catch((c) => {
@@ -267,11 +314,11 @@ class OrderItemTest {
     let order_items = OrderItemTest.order_items;
     let orderItem = {
      order_id: "444" ,
-     type: 'dc',
-     isbn: "324",
+     dish_id: "324",
      price: 10.00,
-     name: "Washfold",
-     quantity: 0
+     name: "Chicken",
+     quantity: 0,
+     tax: 0.00
    };
    order_items.insert(orderItem).then((item) => {
       expect(item.quantity).to.equal(0);
@@ -279,44 +326,40 @@ class OrderItemTest {
     }).catch(m=>console.log(m));
   }
 
-  @test("should allow extra item details")
-  public testExtra(done) {
-    let order_items = OrderItemTest.order_items;
-    let orderItem = { order_id: "444", type: "dc", isbn: "324", price: 10.0, name: "Washfold", quantity: 2, extra: [{ quantity: 1, name: "red", price: 0 }, { quantity: 1, name: "blue", price: 1 }] };
-    order_items
-      .insert(orderItem)
-      .then(item => {
-        return order_items.get(item.id);
-      })
-      .then(item => {
-        expect(item.extra.length).to.equal(2);
-        return order_items.update(item, {extra : null});
-      })
-      .then(item => {
-        return order_items.get(item.id);
-      })
-      .then(item => {
-        expect(item.extra).to.equal(null);
-        done();
-      })
-      .catch(m => console.log(m));
-  }
-
+  
   @test("should allow positive quantity")
   public testPositiveQuantity(done) {
     let order_items = OrderItemTest.order_items;
     let orderItem = {
      order_id: "444" ,
-     isbn: "324",
-     type: 'wf',
+     dish_id: "324",
      price: 10.00,
-     name: "Washfold",
-     quantity: 10
+     name: "Chicken",
+     quantity: 10,
+     tax: 0.00
    };
    order_items.insert(orderItem).then((item) => {
       expect(item.quantity).to.equal(10);
       done();
     }).catch(m=>console.log(m));
+  }
+
+
+  @test("shouldn't allow dish_id with whitespace")
+  public testInvalidDishId(done) {
+   let order_items = OrderItemTest.order_items;
+   let orderItem = {
+     order_id: "444" ,
+     dish_id: "3 24",
+     price: 10.00,
+     name: "Chicken",
+     quantity: 10,
+     tax: 0.00
+   };
+   order_items.insert(orderItem).then(_.noop)
+      .catch((c) => {
+        done();
+    });
   }
 }
 
