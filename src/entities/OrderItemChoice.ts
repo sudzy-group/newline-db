@@ -46,7 +46,6 @@ export class OrderItemChoice extends Entity {
     @EntityField({
         group: "price",
         name: "price",
-        mandatory: true,
         description: "extra price" 
     })
     public price: number;
