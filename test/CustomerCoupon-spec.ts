@@ -37,7 +37,7 @@ class CustomerCouponsTest {
   public testInsertCoupon(done) {
     let customers = CustomerCouponsTest.customers;
     let customer_coupons = CustomerCouponsTest.customer_coupons;
-    customers.insert({ mobile: "6465490560" }).then((cust) => {
+    customers.insert({ token: "6465490560" }).then((cust) => {
       let couponObj = {
         customer_id: cust.id,
         coupon_id: 1,
@@ -57,7 +57,7 @@ class CustomerCouponsTest {
     let customers = CustomerCouponsTest.customers;
     let customer_coupons = CustomerCouponsTest.customer_coupons;
     let customer = null;
-    customers.insert({ mobile: "6465490520" }).then((cust) => {
+    customers.insert({ token: "6465490520" }).then((cust) => {
       customer = cust;
       let couponObj1 = {
         customer_id: cust.id,
@@ -82,7 +82,7 @@ class CustomerCouponsTest {
   public testSearchByCustomerId(done) {
     let customers = CustomerCouponsTest.customers;
     let customer_coupons = CustomerCouponsTest.customer_coupons;
-    customers.insert({ mobile: "6225490560" }).then((cust) => {
+    customers.insert({ token: "6225490560" }).then((cust) => {
       let couponObj = {
         customer_id: cust.id,
         coupon_id: 1,
