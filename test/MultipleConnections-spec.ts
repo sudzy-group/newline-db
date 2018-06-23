@@ -15,6 +15,7 @@ class MultipleConnectionsTest {
   public testMultiple(done) {
     let db = new PouchDB("default");
     let customerObj = {
+      token: "24242",
       formatted_mobile: "+1(929)2778391",
       mobile: "19292778391",
       allow_notifications: true,
