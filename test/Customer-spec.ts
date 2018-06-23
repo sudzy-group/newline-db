@@ -167,10 +167,13 @@ class CustomerTest {
     }).then(cs => {
       let c = cs[0];
       let updatedCustomerObj = {
-        name: "Roy Ganor1"
+        name: "Roy Ganor1",
+        allow_notifications: false
       }
       return customers.update(c, updatedCustomerObj);
     }).then((cus) => {
+      expect(cus.name).to.equal("Roy Ganor1");
+      expect(cus.allow_notifications).to.equal(false);
       done();
     }).catch((m) => {
       console.log(m);
