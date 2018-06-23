@@ -32,13 +32,11 @@ class TimelineTest {
     let timelines = TimelineTest.timelines;
     timelines
       .insert({
-        employee_id: "123456",
         operation: 1,
         order_id: "123",
         text: "Hello world!"
       })
       .then(timeline => {
-        expect(timeline.employee_id).to.exist;
         expect(timeline.operation).to.equal(1);
         expect(timeline.order_id).to.equal("123");
         expect(timeline.text).to.equal("Hello world!");
@@ -53,7 +51,6 @@ class TimelineTest {
     let timelines = TimelineTest.timelines;
     timelines
       .insert({
-        employee_id: "123456",
         operation: 1,
         order_id: "123",
         text: "Hello world!"
@@ -61,7 +58,6 @@ class TimelineTest {
       .then(timeline => {
         return timelines
         .insert({
-          employee_id: "123456",
           operation: 2,
           order_id: "123",
           text: "Hello world!"
