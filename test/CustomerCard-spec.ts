@@ -140,7 +140,6 @@ class CustomerCardTest {
       }
       return customer_cards.insert(cardObj);
     }).then((card) => {
-      expect(card.card_token).to.equal(null);
       let updatedCardObj = {
          card_token: "2234akdo"
       }
