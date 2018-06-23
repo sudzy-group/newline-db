@@ -130,7 +130,7 @@ class OrderItemChoiceTest {
       }
       return order_item_choices.update(item, updatedItem);
     }).then((updated_item) => {
-      expect(updated_item.price).to.equal(6.00);
+      expect(updated_item.price).to.equal(5.00);
       done();
     }).catch(m=>console.log(m));
   }
