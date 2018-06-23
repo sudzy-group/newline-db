@@ -38,7 +38,7 @@ class OrderChargeTest {
     let orderChargeObj = {
       order_id: "1",
       amount: 100.00,
-      charge_type: "other"
+      charge_type: "card"
     };
     order_charges.insert(orderChargeObj).then((charge) => {
       expect(charge.order_id).to.equal("1");
@@ -48,27 +48,174 @@ class OrderChargeTest {
   }
 
 
-  @test("should insert charge and sub-charge")
-  public testInsertCharges(done) {
+  @test("should insert charge with charge id and card id")
+  public testInsertCardCharge(done) {
     let order_charges = OrderChargeTest.order_charges;
-    let ps = [
-      order_charges.insert({
+    let orderChargeObj = {
         order_id: "1",
         amount: 100.00,
-        charge_type: "other"
-      })  ,
-      order_charges.insert({
-        order_id: "2",
-        amount: 50.00,
-        charge_type: "Paid in #023456",
-        parent_id: "123"
-      })
-    ];
-    Promise.all(ps).then((charges) => {
-      expect(charges.length).to.equal(2);
+        charge_type: "crd",
+        charge_id: '1212',
+        card_id: "24439aif"
+    };
+    order_charges.insert(orderChargeObj).then((charge) => {
+      expect(charge.charge_id).to.equal("1212");
+      expect(charge.card_id).to.equal("24439aif");
       done();
     }).catch(m=>console.log(m));
   }
+
+
+//Search
+  @test("should be searchable by order id")
+  public testSearchOrderId(done) {
+    let order_charges = OrderChargeTest.order_charges;
+    let orderChargeObj = {
+        order_id: "123",
+        amount: 100.00,
+        charge_type: "crd",
+        charge_id: '1212',
+        card_id: "24439aif"
+    };
+    order_charges.insert(orderChargeObj).then((charge) => {
+      return order_charges.find("order_id", "123")
+    }).then((cs) => {
+      expect(cs.length).to.equal(1);
+      expect(cs[0].order_id).to.equal("123");
+      done();
+    }).catch(m=>console.log(m));
+  }
+
+
+
+//Update
+  @test("should update with refund")
+  public testRefund(done) {
+    let order_charges = OrderChargeTest.order_charges;
+    let orderChargeObj = {
+        order_id: "1",
+        amount: 100.00,
+        charge_type: "crd",
+        charge_id: '1212',
+        card_id: "24439aif"
+    };
+    order_charges.insert(orderChargeObj).then((charge) => {
+    let updatedChargeObj = {
+        refund_id: "232",
+        amount_refunded: 100.00
+      }
+      return order_charges.update(charge, updatedChargeObj);
+     }).then((updated) => {
+     	expect(updated.refund_id).to.equal("232");
+     	expect(updated.amount_refunded).to.equal(100.00);
+        done();
+    }).catch((m) => {
+      console.log(m);
+    });
+}
+
+
+
+  @test("should not update order_id")
+  public testNoOrderIdUpdate(done) {
+    let order_charges = OrderChargeTest.order_charges;
+    let orderChargeObj = {
+        order_id: "1",
+        amount: 100.00,
+        charge_type: "crd",
+        charge_id: '1212',
+        card_id: "24439aif"
+    };
+    order_charges.insert(orderChargeObj).then((charge) => {
+      let updatedChargeObj = {
+        order_id: "222"
+      }
+      return order_charges.update(charge, updatedChargeObj);
+    }).then(_.noop)
+      .catch((c) => {
+        done();
+      });
+  }
+
+
+
+  @test("should not update amount")
+  public testNoAmountUpdate(done) {
+    let order_charges = OrderChargeTest.order_charges;
+    let orderChargeObj = {
+        order_id: "1",
+        amount: 100.00,
+        charge_type: "crd",
+        charge_id: '1212',
+        card_id: "24439aif"
+    };
+    order_charges.insert(orderChargeObj).then((charge) => {
+      let updatedChargeObj = {
+        amount: 55.00
+      }
+      return order_charges.update(charge, updatedChargeObj);
+    }).then(_.noop)
+      .catch((c) => {
+        done();
+      });
+  }
+
+  @test("should not update charge type")
+  public testNoChargeTypeUpdate(done) {
+    let order_charges = OrderChargeTest.order_charges;
+    let orderChargeObj = {
+        order_id: "1",
+        amount: 100.00,
+        charge_type: "card",
+        charge_id: '1212',
+        card_id: "24439aif"
+    };
+    order_charges.insert(orderChargeObj).then((charge) => {
+      let updatedChargeObj = {
+        charge_type: "cash"
+      }
+      return order_charges.update(charge, updatedChargeObj);
+    }).then(_.noop)
+      .catch((c) => {
+        done();
+      });
+  }
+
+
+  //Validators
+  @test("shouldn't allow card_id with whitespace")
+  public testInvalidCardId(done) {
+    let order_charges = OrderChargeTest.order_charges;
+    let orderChargeObj = {
+        order_id: "1",
+        amount: 100.00,
+        charge_type: "card",
+        charge_id: '1212',
+        card_id: "24 439aif"
+    };
+    order_charges.insert(orderChargeObj).then(_.noop)
+      .catch((c) => {
+        done();
+    });
+  }
+
+
+  @test("shouldn't allow charge_id with whitespace")
+  public testInvalidChargeId(done) {
+    let order_charges = OrderChargeTest.order_charges;
+    let orderChargeObj = {
+        order_id: "1",
+        amount: 100.00,
+        charge_type: "card",
+        charge_id: '1 212',
+        card_id: "24439aif"
+    };
+    order_charges.insert(orderChargeObj).then(_.noop)
+      .catch((c) => {
+        done();
+    });
+  }
+
 }
 
 
