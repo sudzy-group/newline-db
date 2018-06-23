@@ -30,6 +30,30 @@ class OrderChargeTest {
   }
 
 
+//Delete
+  @test("should delete order charge")
+   public testDeleteOrderCharge(done) {
+    let order_charges = OrderChargeTest.order_charges;
+    let orderChargeObj = {
+      order_id: "1",
+      amount: 100.00,
+      charge_type: "card"
+    };
+    let id = "";
+    order_charges.insert(orderChargeObj).then((charge) => {
+      id = charge.id;
+      return order_charges.remove(charge);
+   }).then((e) => {
+      return order_charges.get(id);
+   }).then(_.noop)
+   .catch((c) => {
+       done();
+   });
+  }
+  
+
+
+
   //Insert
 
   @test("should insert charge")
