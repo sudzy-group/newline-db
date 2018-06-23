@@ -26,12 +26,15 @@ class CustomerTest {
     const customers = new Customers(CustomerTest.db, Customer);
     expect(customers.getPrefix()).to.equal("customer");
   }
+
+
+
   //Insertion  
-  @test("should insert customer with mobile")
+  @test("should insert customer with token")
   public testInsertMobile(done) {
     const customers = new Customers(CustomerTest.db, Customer);
-    customers.insert({ mobile: "6465490561" }).then((c) => {
-      expect(c.mobile).to.equal("6465490561");
+    customers.insert({ token: "242333" }).then((c) => {
+      expect(c.token).to.equal("242333");
       done();
     }).catch(m=>console.log(m));
   }
@@ -39,20 +42,12 @@ class CustomerTest {
   @test("should insert all parameters")
   public testInsertAll(done) {
     let customerObj = {
+      token: "8399232",
       mobile: "19292778399",
       formatted_mobile: '+1(929)277-8399',
       name: "Joseph Shmoo",
       email: "joesh@gmail.com",
-      street_num: "199",
-      street_route: "Orchard Street",
-      apartment: "2D",
-      city: "New York",
-      state: "NY",
-      zip: "10002",
-      delivery_notes: "Ring bell twice",
-      cleaning_notes: "Clean slowly",
-      payment_customer_id: "cus_9xJOnv9Enc98S",
-      route_id: "123"
+      payment_customer_id: "cus_9xJOnv9Enc98S"
     }
     const customers = new Customers(CustomerTest.db, Customer);
     customers.insert(customerObj).then((c) => {
@@ -66,11 +61,28 @@ class CustomerTest {
     }).catch(m=>console.log(m));
   }
 
+
+  @test("should be searchable by token")
+  public testSearchToken(done) {
+    const customers = new Customers(CustomerTest.db, Customer);
+    customers.insert({ token: "232568" }).then((c) => {
+      return customers.find("token", "232568")
+    }).then((cs) => {
+      expect(cs.length).to.equal(1);
+      expect(cs[0].token).to.equal("232568");
+      done();
+    }).catch(m=>console.log(m));
+  }
+
+
+
+
+
   //Search
   @test("should be searchable by mobile")
   public testSearchMobile(done) {
     const customers = new Customers(CustomerTest.db, Customer);
-    customers.insert({ mobile: "6465490562" }).then((c) => {
+    customers.insert({ token: "656545", mobile: "6465490562" }).then((c) => {
       return customers.find("mobile", "6465490562")
     }).then((cs) => {
       expect(cs.length).to.equal(1);
@@ -79,60 +91,11 @@ class CustomerTest {
     }).catch(m=>console.log(m));
   }
 
-  @test("should be searchable by email")
-  public testSearchEmail(done) {
-    const customers = new Customers(CustomerTest.db, Customer);
-    customers.insert({ mobile: "1235490562", email: "MYEMAIL@gmail.com" }).then((c) => {
-      return customers.find("email", "myemail@gmail.com")
-    }).then((cs) => {
-      expect(cs.length).to.equal(1);
-      expect(cs[0].mobile).to.equal("1235490562");
-      done();
-    }).catch(m=>console.log(m));
-  }  
-
-  @test("should be searchable by last4")
-  public testSearchLast4(done) {
-    const customers = new Customers(CustomerTest.db, Customer);
-    customers.insert({ mobile: "6465490563" }).then((c) => {
-      return customers.find("mobile", "0563")
-    }).then((cs) => {
-      expect(cs.length).to.equal(1);
-      expect(cs[0].mobile).to.equal("6465490563");
-      done();
-    }).catch(m=>console.log(m));
-  }
-
-  @test("should be searchable by metaphone")
-  public testSearchName(done) {
-    const customers = new Customers(CustomerTest.db, Customer);
-    customers.insert({ name: "Roy Ganor", mobile: "6465490564" }).then((c) => {
-      return customers.findByName("Roi Gnor");
-    }).then((cs) => {
-      expect(cs.length).to.equal(1);
-      expect(cs[0].name).to.equal("Roy Ganor");
-      done();
-    }).catch(m=>console.log(m));
-  }
-
-
-  @test("should be searchable by last name")
-  public testSearchLastName(done) {
-    const customers = new Customers(CustomerTest.db, Customer);
-    customers.insert({ name: "Hilary Barr", mobile: "6465490564" }).then((c) => {
-      return customers.findByName("barr");
-    }).then((cs) => {
-      expect(cs.length).to.equal(1);
-      expect(cs[0].name).to.equal("Hilary Barr");
-      done();
-    }).catch(m=>console.log(m));
-  }
-
 
   @test("should be not found by missing mobile")
-  public testSearchNotFound(done) {
+  public testSearchMobileNotFound(done) {
     const customers = new Customers(CustomerTest.db, Customer);
-    customers.insert({ name: "Roy Ganor", mobile: "6465490564" }).then((c) => {
+    customers.insert({ token: "23137", name: "Roy Ganor", mobile: "6465490564" }).then((c) => {
       return customers.find('mobile', '1111111');
     }).then((cs) => {
       expect(cs.length).to.equal(0);
@@ -141,65 +104,19 @@ class CustomerTest {
     });
   }  
 
-  @test("should be searchable by name")
-  public testSearchMetaphone(done) {
-    const customers = new Customers(CustomerTest.db, Customer);
-    customers.insert({ name: "Roo Ganor", mobile: "6465490565" }).then((c) => {
-      return customers.find("name", "Roo Ganor");
-    }).then((cs) => {
-      expect(cs.length).to.equal(1);
-      expect(cs[0].name).to.equal("Roo Ganor");
-      done();
-    }).catch(m=>console.log(m));
-  }
 
-  @test("should be searchable by route id")
-  public testSearchRouteId(done) {
+  @test("should be not found by missing token")
+  public testSearchTokenNotFound(done) {
     const customers = new Customers(CustomerTest.db, Customer);
-    customers.insert({ name: "Roy Ganor", mobile: "6465490564", route_id : "567" }).then((c) => {
-      return customers.findByRoute("567");
-    }).then((cs) => {
-      expect(cs.length).to.equal(1);
-      expect(cs[0].name).to.equal("Roy Ganor");
-      return customers.update(cs[0], { route_id: null});
-    }).then(() => {      
-      return customers.findByRoute("567");
+    customers.insert({ token: "3578", name: "Roy Ganor", mobile: "6465490500" }).then((c) => {
+      return customers.find('token', '4444');
     }).then((cs) => {
       expect(cs.length).to.equal(0);
       done();
-    }).catch(m=>console.log(m));
-  }  
+    }).catch(m=>{
+    });
+  } 
 
-  @test("should be possible to paginate")
-  public testSearchPaginate(done) {
-    const customers = new Customers(CustomerTest.db, Customer);
-    customers.insert({ name: "Boo Gan1", mobile: "6465490555" }).then((c) => {
-      return customers.insert({ name: "Boo Gan2", mobile: "6165490555" });
-    }).then((cs) => {
-      return customers.insert({ name: "Boo Gan3", mobile: "6225490555" });
-    }).then((cs) => {
-      return customers.find("mobile", "0555")
-    }).then((custs) => {
-      expect(custs.length).to.equal(3);
-      expect(custs[0].name).to.equal("Boo Gan1");
-      expect(custs[1].name).to.equal("Boo Gan2");
-      expect(custs[2].name).to.equal("Boo Gan3");
-      return customers.find("mobile", "0555", {limit: 2});
-    }).then((custs2) => {
-      expect(custs2[0].name).to.equal("Boo Gan1");
-      expect(custs2[1].name).to.equal("Boo Gan2");
-      expect(custs2.length).to.equal(2);
-      return customers.find("mobile", "0555", {limit: 1});
-    }).then((custs1) => {
-      expect(custs1.length).to.equal(1);
-      expect(custs1[0].name).to.equal("Boo Gan1");
-      return customers.find("mobile", "0555", {limit: 1, skip: 2});
-    }).then((custs1) => {
-      expect(custs1.length).to.equal(1);
-      expect(custs1[0].name).to.equal("Boo Gan3");
-      done();
-    }).catch(m=>console.log(m));
-  }
 
  
 
@@ -207,17 +124,11 @@ class CustomerTest {
   @test("should update parameters")
   public testUpdate(done) {
     let customerObj = {
+      token: "257",
       mobile: "19292778391",
       name: "Mud Park",
       email: "mpark@gmail.com",
-      street_num: "199",
-      street_route: "Orchard Street",
-      apartment: "2D",
-      city: "New York",
-      state: "NY",
-      zip: "10002",
-      delivery_notes: "Ring bell twice",
-      cleaning_notes: "Clean slowly",
+      allow_notifications: false,
       payment_customer_id: "cus_9xJOnv9Enc98S"
     }
     const customers = new Customers(CustomerTest.db, Customer);
@@ -228,12 +139,13 @@ class CustomerTest {
       let updatedCustomerObj = {
         name: "Muddy Parks",
         email: "muddyparks@gmail.com",
-        delivery_notes: "Turn around"
+        allow_notifications: true
       }
       return customers.update(c, updatedCustomerObj);
     }).then((cus) => {
       expect(cus.mobile).to.equal("19292778391");
       expect(cus.name).to.equal("Muddy Parks");
+      expect(cus.allow_notifications).to.equal(true);
       done();
     }).catch(m=>console.log(m));
   }
@@ -242,6 +154,7 @@ class CustomerTest {
   @test("should update parameters 2")
   public testUpdate2(done) {
     let customerObj = {
+      token: "2321",
       formatted_mobile: "+1(929)2778391",
       mobile: "19292778391",
       allow_notifications: true,
@@ -253,8 +166,7 @@ class CustomerTest {
     }).then(cs => {
       let c = cs[0];
       let updatedCustomerObj = {
-        name: "Roy Ganor1",
-        
+        name: "Roy Ganor1"
       }
       return customers.update(c, updatedCustomerObj);
     }).then((cus) => {
@@ -264,9 +176,10 @@ class CustomerTest {
     });
   }  
 
-  @test("should not update mobile")
+  @test("should not update token")
   public testNoMobileUpdate(done) {
     let customerObj = {
+      token: "2572",
       mobile: "19292778392",
       name: "Mud Park"
     }
@@ -274,7 +187,7 @@ class CustomerTest {
     customers.insert(customerObj).then((c) => {
       expect(c.mobile).to.equal("19292778392");
       let updatedCustomerObj = {
-        mobile: "19292778322"
+        token: "243"
       }
       return customers.update(c, updatedCustomerObj);
     }).then(_.noop)
@@ -289,6 +202,7 @@ class CustomerTest {
   public testDeleteCustomerMobile(done) {
     let id = "";
     let customerObj = {
+      token: "535",
       mobile: "19292778387"
     }
     const customers = new Customers(CustomerTest.db, Customer);
@@ -307,21 +221,16 @@ class CustomerTest {
   }
 
 
+
+
   @test("should delete customer with many params")
   public testDeleteCustomerAllParams(done) {
     let id = "";
     let customerObj = {
+      token: "665",
       mobile: "19292778388",
       name: "Joseph Shmoo",
       email: "joesh@gmail.com",
-      street_num: "199",
-      street_route: "Orchard Street",
-      apartment: "2D",
-      city: "New York",
-      state: "NY",
-      zip: "10002",
-      delivery_notes: "Ring bell twice",
-      cleaning_notes: "Clean slowly",
       payment_customer_id: "cus_9xJOnv9Enc98S"
     }
     const customers = new Customers(CustomerTest.db, Customer);
@@ -330,6 +239,8 @@ class CustomerTest {
       return customers.get(id);
     }).then((cus) => {
       expect(cus.mobile).to.equal("19292778388");
+  //TODO THIS SHOULD FAIL!!!
+      expect(cus.token).to.equal('66569');
       return customers.remove(cus);
     }).then((e) => {
       return customers.get(id);
@@ -360,21 +271,11 @@ class CustomerTest {
       });
   }
 
-  @test("shouldn't allow invalid zip")
-  public testInvalidZip(done) {
-    const customers = new Customers(CustomerTest.db, Customer);
-    customers.insert({ mobile: "6165490561", zip: "1002" })
-      .then(_.noop)
-      .catch((c) => {
-        done();
-      });
-  }
-
 
   @test("should allow valid email")
   public testValidEmail(done) {
     const customers = new Customers(CustomerTest.db, Customer);
-    customers.insert({ mobile: "6465490566", email: "jshmo@gmail.com" }).then((c) => {
+    customers.insert({ token: "2463", mobile: "6465490566", email: "jshmo@gmail.com" }).then((c) => {
       expect(c.email).to.equal("jshmo@gmail.com");
       done();
     }).catch(m=>console.log(m));
@@ -383,7 +284,7 @@ class CustomerTest {
   @test("should not allow invalid email")
   public testInvalidEmail(done) {
     const customers = new Customers(CustomerTest.db, Customer);
-    customers.insert({ mobile: "6465490567", email: "jshmo" }).then(_.noop
+    customers.insert({ token: "646", mobile: "6465490567", email: "jshmo" }).then(_.noop
     ).catch((c) => {
       done();
     });
@@ -392,17 +293,19 @@ class CustomerTest {
   @test("shouldn't allow payment_customer_id with whitespace")
   public testInvalidPaymentCustomerId(done) {
     const customers = new Customers(CustomerTest.db, Customer);
-    customers.insert({ mobile: "6165490563", payment_customer_id: "tok 123" }).then(_.noop)
+    customers.insert({ token: "757", mobile: "6165490563", payment_customer_id: "tok 123" }).then(_.noop)
       .catch((c) => {
         done();
       });
   }
 
 
+
   // last name
-  @test("should insert all parameters")
+  @test("should recognize last name")
   public testLastName(done) {
     let customerObj = {
+      token: "678",
       mobile: "19292778399",
       formatted_mobile: '+1(929)277-8399',
       name: "Joseph Shmoo",
