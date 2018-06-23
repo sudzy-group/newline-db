@@ -32,6 +32,7 @@ class TimelineTest {
     let timelines = TimelineTest.timelines;
     timelines
       .insert({
+      	employee_id: "",
         operation: 1,
         order_id: "123",
         text: "Hello world!"
@@ -51,6 +52,7 @@ class TimelineTest {
     let timelines = TimelineTest.timelines;
     timelines
       .insert({
+      	employee_id: "",
         operation: 1,
         order_id: "123",
         text: "Hello world!"
@@ -58,6 +60,7 @@ class TimelineTest {
       .then(timeline => {
         return timelines
         .insert({
+          employee_id: "",
           operation: 2,
           order_id: "123",
           text: "Hello world!"
