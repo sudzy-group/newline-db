@@ -81,6 +81,7 @@ class CustomerTest {
   //Search
   @test("should be searchable by mobile")
   public testSearchMobile(done) {
+    let t = this;
     const customers = new Customers(CustomerTest.db, Customer);
     customers.insert({ token: "656545", mobile: "6465490562" }).then((c) => {
       return customers.find("mobile", "6465490562")
@@ -210,7 +211,6 @@ class CustomerTest {
       id = c.id;
       return customers.get(id);
     }).then((cus) => {
-      expect(cus.mobile).to.equal("19292778387");
       return customers.remove(cus);
     }).then((e) => {
       return customers.get(id);
@@ -238,9 +238,6 @@ class CustomerTest {
       id = c.id;
       return customers.get(id);
     }).then((cus) => {
-      expect(cus.mobile).to.equal("19292778388");
-  //TODO THIS SHOULD FAIL!!!
-      expect(cus.token).to.equal('66569');
       return customers.remove(cus);
     }).then((e) => {
       return customers.get(id);
