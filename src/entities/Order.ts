@@ -1,8 +1,6 @@
 import { Entity, EntityField } from "pouchable";
 import { identity } from 'lodash';
-import { amount0OrGreater } from '../validators/amount0OrGreater';
 import { noWhitespace } from '../validators/noWhitespace';
-import { lengthGreater1 } from "../validators/lengthGreater1";
 /**
  * Represent a Order entity
  */
@@ -50,6 +48,22 @@ export class Order extends Entity {
         description: "Kiosk id"
     })
     public kiosk_id: string;
+
+    @EntityField({
+        group: "default",
+        name: "subtotal",
+        mandatory: true,
+        description: "Order subtotal amount"
+    })
+    public subtotal: number;
+
+    @EntityField({
+        group: "default",
+        name: "total",
+        mandatory: true,
+        description: "Order total amount"
+    })
+    public total: number;
 
 	@EntityField({
         group: "customer",

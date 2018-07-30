@@ -38,7 +38,9 @@ class OrderTest {
      ended_at: 4545447,
      readable_id: "e5d4707d-cd54-bed3-7570-6e9dbec307zz",
      is_takeout: false,
-     kiosk_id: "2"
+     kiosk_id: "2",
+     subtotal: 0,
+     total: 0
    }
    orders.insert(orderObj).then((ord) => {
       expect(ord.started_at).to.equal(4545444);
@@ -59,7 +61,9 @@ class OrderTest {
      ended_at: 4545447,
      readable_id: "f5d4707d-cd54-bed3-7570-6e9dbec307ze",
      is_takeout: true,
-     kiosk_id: "2"
+     kiosk_id: "2",
+     subtotal: 1,
+     total: 1
    }
    orders.insert(orderObj).then((ord) => {
       expect(ord.started_at).to.equal(4545444);
@@ -89,7 +93,9 @@ class OrderTest {
      tax: 1.00,
      tip: 3.00,
      discount_fixed: 5.00,
-     discount_id: 4
+     discount_id: 4,
+     subtotal: 1,
+     total: 1
    }
    orders.insert(orderObj).then((ord) => {
       expect(ord.started_at).to.equal(4545444);
@@ -118,7 +124,9 @@ class OrderTest {
      is_takeout: true,
      kiosk_id: "2",
      customer_id: "aaa",
-     notes: "Pick up quickly"
+     notes: "Pick up quickly",
+     subtotal: 1.1,
+     total: 1
    }
    orders.insert(orderObj).then((ord) => {
       expect(ord.notes).to.equal("Pick up quickly");
@@ -136,7 +144,9 @@ class OrderTest {
      is_takeout: true,
      kiosk_id: "2",
      tax: 1.00,
-     tip: 3.00
+     tip: 3.00,
+     subtotal: 1,
+     total: 1
    }
    orders.insert(orderObj).then((ord) => {
       expect(ord.tax).to.equal(1.00);
@@ -144,10 +154,6 @@ class OrderTest {
       done();
     }).catch(m=>console.log(m));
   }
-
-
-
-
 
   //Search
   @test("should search customer id")
@@ -159,7 +165,9 @@ class OrderTest {
      readable_id: "j5d4707d-cd54-bed3-7570-6e9dbec307zz",
      is_takeout: true,
      kiosk_id: "2",
-     customer_id: "bbb"
+     customer_id: "bbb",
+     subtotal: 1.1,
+     total: 1.5
    }
    orders.insert(orderObj).then((ord) => {
       expect(ord.customer_id).to.equal("bbb");
@@ -179,7 +187,9 @@ class OrderTest {
      readable_id: "k5d4707d-cd54-bed3-7570-6e9dbec307zz",
      is_takeout: true,
      kiosk_id: "2",
-     customer_id: "bbb"
+     customer_id: "bbb",
+     subtotal: 1,
+     total: 1.6
    }
    orders.insert(orderObj).then((ord) => {
       expect(ord.readable_id).to.equal("k5d4707d-cd54-bed3-7570-6e9dbec307zz");
@@ -189,13 +199,6 @@ class OrderTest {
       done();
     }).catch(m=>console.log(m));
   }
-
- 
-
-
-
-
-
 
   //Update
 
@@ -209,6 +212,8 @@ class OrderTest {
      is_takeout: true,
      kiosk_id: "2",
      customer_id: "eee",
+     subtotal: 1,
+     total: 1.6
    }
    orders.insert(orderObj).then((ord) => {
       expect(ord.readable_id).to.equal("l5d4707d-cd54-bed3-7570-6e9dbec307zz");
@@ -231,7 +236,9 @@ class OrderTest {
      readable_id: "m5d4707d-cd54-bed3-7570-6e9dbec307zz",
      is_takeout: true,
      kiosk_id: "2",
-     customer_id: "eee"
+     customer_id: "eee",
+     subtotal: 1,
+     total: 1
    }
    orders.insert(orderObj).then((ord) => {
       expect(ord.readable_id).to.equal("m5d4707d-cd54-bed3-7570-6e9dbec307zz");
@@ -256,7 +263,9 @@ class OrderTest {
      readable_id: "n5d4707d-cd54-bed3-7570-6e9dbec307zz",
      is_takeout: true,
      kiosk_id: "2",
-     customer_id: "i2i"
+     customer_id: "i2i",
+     subtotal: 1,
+     total: 1
    }
    orders.insert(orderObj, new Date().getTime() - 200).then((ord) => {
       let orderUpdated = {
@@ -278,7 +287,9 @@ class OrderTest {
      readable_id: "o5d4707d-cd54-bed3-7570-6e9dbec307zz",
      is_takeout: true,
      kiosk_id: "2",
-     customer_id: "k2k"
+     customer_id: "k2k",
+     subtotal: 1,
+     total: 1
    }
    orders.insert(orderObj).then((ord) => {
       let orderUpdated = {
@@ -304,7 +315,9 @@ class OrderTest {
      readable_id: "p5d4707d-cd54-bed3-7570-6e9dbec307zz",
      is_takeout: true,
      kiosk_id: "2",
-     customer_id: "a3a"
+     customer_id: "a3a",
+     subtotal: 1,
+     total: 1
    }
    let id = "";
    orders.insert(orderObj).then((ord) => {
@@ -330,7 +343,9 @@ class OrderTest {
      readable_id: "q5d4 707d-cd54-bed3-7570-6e9dbec307zz",
      is_takeout: true,
      kiosk_id: "2",
-     customer_id: "ddd"
+     customer_id: "ddd",
+     subtotal: 1,
+     total: 1
    }
    orders.insert(orderObj).then(_.noop)
       .catch((c) => {
@@ -348,7 +363,9 @@ class OrderTest {
      readable_id: "r5d4707d-cd54-bed3-7570-6e9dbec307zz",
      is_takeout: true,
      customer_id: "ddd",
-     kiosk_id:"2 4"
+     kiosk_id:"2 4",
+     subtotal: 1,
+     total: 1
    }
    orders.insert(orderObj).then(_.noop)
       .catch((c) => {
