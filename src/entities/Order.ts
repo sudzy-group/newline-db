@@ -121,4 +121,11 @@ export class Order extends Entity {
         description: "Ready at"
     })
     public ready_at: number;
+
+    @EntityField({
+        group: "printed",
+        name: "is_printed",
+        description: "Is Order Printed"
+    })
+    public is_printed: boolean;    
 }

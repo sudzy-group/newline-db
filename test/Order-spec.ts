@@ -218,7 +218,8 @@ class OrderTest {
    orders.insert(orderObj).then((ord) => {
       expect(ord.readable_id).to.equal("l5d4707d-cd54-bed3-7570-6e9dbec307zz");
       let orderUpdated = {
-         readable_id: "92d4707d-cd54-bed3-7570-6e9dbec307zz"
+         readable_id: "92d4707d-cd54-bed3-7570-6e9dbec307zz",
+         is_printed: true
       }
       return orders.update(ord, orderUpdated);
       }).then(_.noop)

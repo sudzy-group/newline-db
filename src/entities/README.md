@@ -65,6 +65,7 @@
 | discount_fixed | `number`   | payment  | Discount in dollar amount |                       |
 | discount_id    | `number`   | payment  | Discount id applied       |                       |
 | ready_at       | `number`   | status   | Ready at                  |                       |
+| is_printed     | `boolean`  | printed  | Is Order Printed          |                       |
 # OrderItem
 | Field Name     | Field Type | Group    | Description                    | Comments       |
 | -------------- | ---------- | -------- | ------------------------------ | -------------- |
