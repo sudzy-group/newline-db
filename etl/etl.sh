@@ -1,5 +1,7 @@
 #!/bin/bash
 
+chmod 777 lib/tools/etl.js
+
 usage()
 {
     echo "usage: etl -s ... -m ... -u ... -p ... -c ... | [-h]]"
@@ -7,11 +9,9 @@ usage()
 
 do_etl() 
 {
-  sed s/\{\{store_id\}\}/$store/g etl/tables.sql > etl/tables_$store.sql
-  sed s/\{\{store_id\}\}/$store/g etl/summary_tables.sql > etl/summary_tables_$store.sql
-  mysql -h $mysql -D etl -u $user -p$pass < etl/tables_$store.sql
-  lib/tools/etl.js -p "$couchdb/$store" -P $store -U $store -h "$mysql" -u $user -w $pass -d etl -s $store
-  mysql -h $mysql -D etl -u $user -p$pass < etl/summary_tables_$store.sql
+  mysql -h $mysql -D newline -u $user -p$pass < etl/tables.sql
+  lib/tools/etl.js -p "$couchdb/$store" -P $store -U $store -h "$mysql" -u $user -w $pass -d newline -s $store
+#   mysql -h $mysql -D etl -u $user -p$pass < etl/summary_tables_$store.sql
 }
 
 store=
