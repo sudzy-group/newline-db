@@ -6,6 +6,7 @@ DROP TABLE IF EXISTS `ItemsSales`;
 CREATE TABLE `ItemsSales` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `userId` int(11) NOT NULL,
+  `categoryName` varchar(250) NOT NULL,
   `category` int(11) NOT NULL,
   `name` varchar(250) NOT NULL,
   `dishId` varchar(250) NOT NULL,
@@ -16,9 +17,10 @@ CREATE TABLE `ItemsSales` (
   PRIMARY KEY (`id`)
 );
 
-INSERT INTO `ItemsSales` (userId, category, name, dishId, milisec, hour, sold, gross)
-SELECT min(oi.userId) as userId, min(d.categoryId) as category, min(d.dishName) as name, min(oi.dishId) as dishId, min(oi.createdAt) - mod(min(oi.createdAt), 60 * 60 * 1000) as milisec, FROM_UNIXTIME((min(oi.createdAt) - mod(min(oi.createdAt), 60 * 60 * 1000))/1000) as hour, count(*) as sold, sum(price) as gross FROM `OrderItems` as oi
+INSERT INTO `ItemsSales` (userId, categoryName, category, name, dishId, milisec, hour, sold, gross)
+SELECT min(oi.userId) as userId, min(c.categoryName) as categoryName, min(d.categoryId) as category, min(d.dishName) as name, min(oi.dishId) as dishId, min(oi.createdAt) - mod(min(oi.createdAt), 60 * 60 * 1000) as milisec, FROM_UNIXTIME((min(oi.createdAt) - mod(min(oi.createdAt), 60 * 60 * 1000))/1000) as hour, count(*) as sold, sum(price) as gross FROM `OrderItems` as oi
 LEFT JOIN Dishes AS d ON oi.dishId = d.dishId
+LEFT JOIN Categories AS c ON d.categoryId = c.categoryId
 GROUP BY HOUR(FROM_UNIXTIME(oi.createdAt/1000)), oi.dishId, oi.userId
 ORDER BY hour;
 
