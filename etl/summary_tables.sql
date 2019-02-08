@@ -41,7 +41,7 @@ CREATE TABLE `ModifiersSales` (
 );
 
 INSERT INTO `ModifiersSales` (userId, name, milisec, hour, sold, gross)
-SELECT min(oic.userId) as userId, min(c.choiceName) as name, min(oic.createdAt) - mod(min(oic.createdAt), 60 * 60 * 1000) as milisec, FROM_UNIXTIME((min(oic.createdAt) - mod(min(oic.createdAt), 60 * 60 * 1000))/1000) as hour, count(*) as sold, sum(price) as gross FROM `OrderItemChoices` as oic
+SELECT min(oic.userId) as userId, min(c.choiceName) as name, min(oic.createdAt) - mod(min(oic.createdAt), 60 * 60 * 1000) as milisec, FROM_UNIXTIME((min(oic.createdAt) - mod(min(oic.createdAt), 60 * 60 * 1000))/1000) as hour, sum(quantity) as sold, sum(quantity) * sum(price) as gross FROM `OrderItemChoices` as oic
 LEFT JOIN Choices AS c ON oic.choiceId = c.choiceId
-GROUP BY HOUR(FROM_UNIXTIME(oic.createdAt/1000)), c.choiceName, oic.userId
+GROUP BY DATE_FORMAT(FROM_UNIXTIME(oi.createdAt/1000), "%Y%m%d"), c.choiceName, oic.userId
 ORDER BY hour;
