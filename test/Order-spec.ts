@@ -166,11 +166,13 @@ class OrderTest {
      is_takeout: true,
      kiosk_id: "2",
      customer_id: "bbb",
+     customer_name: "Motek",
      subtotal: 1.1,
      total: 1.5
    }
    orders.insert(orderObj).then((ord) => {
       expect(ord.customer_id).to.equal("bbb");
+      expect(ord.customer_name).to.equal("Motek");
       return orders.find("customer_id", ord.customer_id);
    }).then((ords) => {   
      expect(ords.length).to.equal(1);

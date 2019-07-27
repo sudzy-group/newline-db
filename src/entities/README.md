@@ -58,6 +58,7 @@
 | subtotal       | `number`   | default  | Order subtotal amount     |                       |
 | total          | `number`   | default  | Order total amount        |                       |
 | customer_id    | `string`   | customer | Customer id               | Searchable            |
+| customer_name  | `string`   | customer | Customer name             |                       |
 | table_id       | `string`   | table    | Table id                  |                       |
 | notes          | `string`   | notes    | Order notes               |                       |
 | tax            | `number`   | payment  | Tax                       |                       |

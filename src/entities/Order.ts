@@ -74,6 +74,13 @@ export class Order extends Entity {
     public customer_id: string;
     
 	@EntityField({
+        group: "customer",
+        name: "customer_name",
+        description: "Customer name"
+    })
+    public customer_name: string;
+    
+	@EntityField({
         group: "table",
         name: "table_id",
         description: "Table id",
