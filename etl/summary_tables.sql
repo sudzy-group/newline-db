@@ -18,7 +18,7 @@ CREATE TABLE `ItemsSales` (
 );
 
 INSERT INTO `ItemsSales` (userId, categoryName, category, name, dishId, milisec, hour, sold, gross)
-SELECT min(oi.userId) as userId, min(c.categoryName) as categoryName, min(d.categoryId) as category, min(d.dishName) as name, min(oi.dishId) as dishId, min(oi.createdAt) - mod(min(oi.createdAt), 60 * 60 * 1000) as milisec, FROM_UNIXTIME((min(oi.createdAt) - mod(min(oi.createdAt), 60 * 60 * 1000))/1000) as hour, sum(quantity) as sold, sum(quantity) * min(price) as gross FROM `OrderItems` as oi
+SELECT min(oi.userId) as userId, min(c.categoryName) as categoryName, min(d.categoryId) as category, min(oi.name) as name, min(oi.dishId) as dishId, min(oi.createdAt) - mod(min(oi.createdAt), 60 * 60 * 1000) as milisec, FROM_UNIXTIME((min(oi.createdAt) - mod(min(oi.createdAt), 60 * 60 * 1000))/1000) as hour, sum(quantity) as sold, sum(quantity) * min(price) as gross FROM `OrderItems` as oi
 LEFT JOIN Dishes AS d ON oi.dishId = d.dishId
 LEFT JOIN Categories AS c ON d.categoryId = c.categoryId
 GROUP BY DATE_FORMAT(FROM_UNIXTIME(oi.createdAt/1000), "%Y%m%d"), oi.dishId, oi.userId
