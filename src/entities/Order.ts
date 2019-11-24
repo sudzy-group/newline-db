@@ -95,6 +95,13 @@ export class Order extends Entity {
     public notes: string;
 
     @EntityField({
+        group: "notes",
+        name: "params",
+        description: "Order extra params"
+    })
+    public params: any;    
+
+    @EntityField({
         group: "payment",
         name: "tax",
         description: "Tax"
@@ -134,5 +141,5 @@ export class Order extends Entity {
         name: "is_printed",
         description: "Is Order Printed"
     })
-    public is_printed: boolean;    
+    public is_printed: boolean;
 }

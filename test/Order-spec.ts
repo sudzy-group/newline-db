@@ -90,6 +90,7 @@ class OrderTest {
      customer_id: "xxx",
      table_id: "1",
      notes: "Pick up quickly", 
+     params: { a : 5 },
      tax: 1.00,
      tip: 3.00,
      discount_fixed: 5.00,
@@ -104,6 +105,7 @@ class OrderTest {
       expect(ord.kiosk_id).to.equal("2");
       expect(ord.customer_id).to.equal("xxx");
       expect(ord.notes).to.equal("Pick up quickly");
+      expect(ord.notes).to.not.be.undefined;
       expect(ord.readable_id).to.equal("g5d4707d-cd54-bed3-7570-6e9dbec307zz");
       expect(ord.tax).to.equal(1.00);
       expect(ord.tip).to.equal(3.00);
