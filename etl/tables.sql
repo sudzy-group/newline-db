@@ -11,7 +11,7 @@ CREATE TABLE `Orders` (
   `kioskId` varchar(12) NULL,
   `subtotal` DECIMAL(10,2) NULL,
   `total` DECIMAL(10,2) NULL,
-  `customerId` varchar(250) NOT NULL,
+  `customerId` varchar(250) NULL,
   `tableId` varchar(12) NULL,
   `notes` varchar(250) DEFAULT NULL,
   `tax` DECIMAL(10,2)  DEFAULT NULL,
