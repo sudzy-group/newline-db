@@ -21,7 +21,7 @@ INSERT INTO `ItemsSales` (userId, categoryName, category, name, dishId, milisec,
 SELECT min(oi.userId) as userId, min(c.categoryName) as categoryName, min(d.categoryId) as category, min(oi.name) as name, min(oi.dishId) as dishId, min(oi.createdAt) - mod(min(oi.createdAt), 60 * 60 * 1000) as milisec, FROM_UNIXTIME((min(oi.createdAt) - mod(min(oi.createdAt), 60 * 60 * 1000))/1000) as hour, sum(quantity) as sold, sum(quantity) * min(price) as gross FROM `OrderItems` as oi
 LEFT JOIN Dishes AS d ON oi.dishId = d.dishId
 LEFT JOIN Categories AS c ON d.categoryId = c.categoryId
-GROUP BY min(oi.createdAt) - mod(oi.createdAt, 60 * 60 * 1000), oi.dishId, oi.userId
+GROUP BY oi.createdAt - mod(oi.createdAt, 60 * 60 * 1000), oi.dishId, oi.userId
 ORDER BY hour;
 
 ########################
@@ -43,5 +43,5 @@ CREATE TABLE `ModifiersSales` (
 INSERT INTO `ModifiersSales` (userId, name, milisec, hour, sold, gross)
 SELECT min(oic.userId) as userId, min(oic.name) as name, min(oic.createdAt) - mod(min(oic.createdAt), 60 * 60 * 1000) as milisec, FROM_UNIXTIME((min(oic.createdAt) - mod(min(oic.createdAt), 60 * 60 * 1000))/1000) as hour, sum(quantity) as sold, sum(quantity) * min(price) as gross FROM `OrderItemChoices` as oic
 LEFT JOIN Choices AS c ON oic.choiceId = c.choiceId
-GROUP BY min(oi.createdAt) - mod(oi.createdAt, 60 * 60 * 1000), c.choiceName, oic.userId
+GROUP BY oic.createdAt - mod(oic.createdAt, 60 * 60 * 1000), c.choiceName, oic.userId
 ORDER BY hour;
