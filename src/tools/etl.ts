@@ -8,6 +8,7 @@ import * as _ from 'lodash';
 import * as mysql from 'mysql';
 import Promise from 'ts-promise';
 import * as async from 'async';
+import * as moment from 'moment';
 
 import { Orders } from "../collections/Orders";
 import { OrderItems } from "../collections/OrderItems";
@@ -93,11 +94,11 @@ function copyPouchToSQL() {
 	/////////////////////
 	pouch.info().then(function(info) {
 		console.log(info)
-		return extract(orders, "customer_id", ordersConvertor, ordersConvertorFields, 'Orders');
+		return extract(orders, "customer_id", ordersConvertor, ordersConvertorFields, 'Orders', mediumFilter);
 	}).then(() => {
-		return extract(order_items, "order_id", orderItemsConvertor, orderItemsConvertorFields, 'OrderItems');
+		return extract(order_items, "order_id", orderItemsConvertor, orderItemsConvertorFields, 'OrderItems', mediumFilter);
 	}).then(() => {
-		return extract(order_item_choices, "order_item_id", orderItemChoicesConvertor, orderItemChoicesConvertorFields, 'OrderItemChoices');
+		return extract(order_item_choices, "order_item_id", orderItemChoicesConvertor, orderItemChoicesConvertorFields, 'OrderItemChoices', mediumFilter);
 	}).then(() => {
 		console.log("Disconnecting");
 		disconnectSQL();
@@ -259,4 +260,21 @@ function toString(val) {
 	if (_.isArray(val)) {
 		return val.join(', ');
 	}
+}
+
+
+var long = moment().subtract(8, 'months').format('x');
+var med = moment().subtract(3, 'months').format('x');
+var short = moment().subtract(1, 'month').format('x');
+
+function longFilter(obj: any) {
+	return obj.created_at > long ;
+}
+
+function mediumFilter(obj: any) {
+	return obj.created_at > med ;
+}
+
+function shortFilter(obj: any) {
+	return obj.created_at > short ;
 }
