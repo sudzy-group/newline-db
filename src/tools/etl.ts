@@ -134,9 +134,6 @@ function extract(collection, field, convertor, convertoFields, keyName, filterFu
 					}).then((r) => {
 						callback(null, r);
 					}).catch(m=> {
-						(values || []).forEach(value => {
-							console.log('****', value)
-						});
 						console.log('error converting...');
 						callback(m)
 					});						
@@ -171,14 +168,16 @@ function insertAll(es, convertor, convertoFields, tableName) {
 
 	let inserts = [];
 	_.each(es, e => {
-		inserts.push(convertor(e));
+		const value = convertor(e)
+		inserts.push(value);
+		console.log(value.join(','))
 	})
 	
 	return new Promise((resolve, reject) => {
 		let query = 'INSERT INTO ' + tableName +' (' + convertoFields().join(',') + ') VALUES ?';
 		let q = SQLconnection.query(query, [inserts], function(error, results, fields) {
 			if (error) {
-				console.log(error);
+				console.log('ERROR INSERTING ', error);
 			}
 			resolve(results);
 		});
