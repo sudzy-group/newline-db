@@ -134,6 +134,9 @@ function extract(collection, field, convertor, convertoFields, keyName, filterFu
 					}).then((r) => {
 						callback(null, r);
 					}).catch(m=> {
+						(values || []).forEach(value => {
+							console.log('****', value)
+						});
 						console.log('error converting...');
 						callback(m)
 					});						
