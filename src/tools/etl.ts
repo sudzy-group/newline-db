@@ -170,7 +170,6 @@ function insertAll(es, convertor, convertoFields, tableName) {
 	_.each(es, e => {
 		const value = convertor(e)
 		inserts.push(value);
-		console.log(value.join(','))
 	})
 	
 	return new Promise((resolve, reject) => {
