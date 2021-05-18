@@ -11,7 +11,7 @@ CREATE TABLE `ItemsSales` (
   `name` varchar(250) NULL,
   `dishId` varchar(250) NULL,
   `milisec` bigint NOT NULL,
-  `hour` datetime NOT NULL,
+  `hour` datetime,
   `sold` INT(11) NULL DEFAULT NULL,
   `gross` DECIMAL(10,2) DEFAULT NULL,
   PRIMARY KEY (`id`)
@@ -34,7 +34,7 @@ CREATE TABLE `ModifiersSales` (
   `userId` int(11) NOT NULL,
   `name` varchar(250) NULL,
   `milisec` bigint NOT NULL,  
-  `hour` datetime NOT NULL,
+  `hour` datetime,
   `sold` INT(11) NULL DEFAULT NULL,
   `gross` DECIMAL(10,2) DEFAULT NULL,
   PRIMARY KEY (`id`)
